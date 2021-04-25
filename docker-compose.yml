@@ -1,0 +1,33 @@
+version: '3.8'
+services:
+  openvpn-server:
+    image: tuimac/openvpn
+    hostname: openvpn-server
+    container_name: openvpn-server
+    ports:
+      - 30000:1194/tcp
+      - 30000:1194/udp
+    env_file:
+      - ./server/env.list
+    cap_add:
+      - NET_ADMIN
+    tty: true
+    stdin_open: true
+    networks:
+      - openvpn-bridge
+  openvpn-bridge:
+    build: ./bridge
+    image: openvpn-bridge
+    hostname: openvpn-bridge
+    container_name: openvpn-bridge
+    volumes:
+      - './bridge/node3.ovpn:/etc/openvpn/client/test.ovpn'
+    cap_add:
+      - NET_ADMIN
+    tty: true
+    stdin_open: true
+    networks:
+      - openvpn-bridge
+networks:
+  openvpn-bridge:
+    name: openvpn-bridge
