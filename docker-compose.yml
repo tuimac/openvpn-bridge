@@ -21,7 +21,7 @@ services:
     hostname: openvpn-bridge
     container_name: openvpn-bridge
     volumes:
-      - './bridge/node3.ovpn:/etc/openvpn/client/test.ovpn'
+      - './test.ovpn:/etc/openvpn/client/test.ovpn'
     cap_add:
       - NET_ADMIN
     tty: true

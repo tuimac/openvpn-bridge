@@ -158,7 +158,9 @@ function startVPN(){
 
 function addRouting(){
     BridgeIP=`host openvpn-bridge | awk '{print $4}'`
+    echo 'Adding '${BRIDGENETWORK}' to route table trasfer to '${BridgeIP}
     ip route add $BRIDGENETWORK via $BridgeIP
+    iptables -t nat -A POSTROUTING -s $BRIDGENETWORK -o $DEVICE -j MASQUERADE
 }
 
 function main(){
@@ -169,10 +171,10 @@ function main(){
         serverConfig
         createClientCert
         downloadPem
-        addRouting
     else
         echo 'Installation of OpenVPN already done.'
     fi
+    addRouting
     startVPN
     if [ $? -eq 0 ]; then
         echo 'Starting OpenVPN process has been sucessed.'
