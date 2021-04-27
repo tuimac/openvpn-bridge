@@ -140,7 +140,6 @@ function startVPN(){
     mkdir /dev/net
     mknod /dev/net/tun c 10 200
     echo $TUNNELNETWORK
-    echo $DEVICE
     iptables -t nat -A POSTROUTING -s $TUNNELNETWORK -o $DEVICE -j MASQUERADE
     env | grep -E 'ROUTING[[:digit:]]' | while read line; do
         local index=0
@@ -174,6 +173,7 @@ function main(){
     else
         echo 'Installation of OpenVPN already done.'
     fi
+    echo 'hello'
     addRouting
     startVPN
     if [ $? -eq 0 ]; then
